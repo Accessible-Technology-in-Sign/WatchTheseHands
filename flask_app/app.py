@@ -13,7 +13,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 load_dotenv() 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{DBLogin.USER}:{DBLogin.PSWD}@localhost/labels'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{DBLogin.USER}:{DBLogin.PSWD}@annotation_db:3306/labels'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = Config.SQLALCHEMY_TRACK_MODIFICATIONS
 
 db.init_app(app)
@@ -115,7 +115,8 @@ def get_word_videos():
 def load_video():
     data = request.json
     video_title = data.get('video_title')
-    video_path = os.path.join(os.getenv("VIDEO_DIRECTORY") , video_title)
+    participant = video_title.split("_")[0]
+    video_path = os.path.join(os.getenv("VIDEO_DIRECTORY"), participant, video_title)
     print(video_path)
 
     try:

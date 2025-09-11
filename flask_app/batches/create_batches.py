@@ -5,23 +5,29 @@ from dotenv import load_dotenv
 def create_phrase_batches():
     load_dotenv() 
     meta_path = os.getenv("META_DATA")
-    meta_file = "dmk_v1-train.json"
-    full_path = os.path.join(meta_path, meta_file)
-    data = {}
-
-    with open(full_path, 'r') as file:
-        data = json.load(file)
-
-    phrases = group_clips_by_word(data)
+    word_dict = {}
+    for item in os.listdir(meta_path):
+        item_path = os.path.join(meta_path, item)
+        if os.path.isdir(item_path):
+            for video in os.listdir(item_path):
+                x = video.split("_")
+                word = x[len(x) - 1].split(".")[0]
+                clip = video
+                if word and clip:
+                    if word not in word_dict:
+                        word_dict[word] = []
+                    # Avoid duplicates
+                    if clip not in word_dict[word]:
+                        word_dict[word].append(clip)
 
     batches = {}
     batch_index = 0
     batches[f"batch_{batch_index}"] = {}
-    #print(phrases)
+    # print(word_dict)
     
-    for phrase_group in phrases:
-        print(phrase_group["word"])
-        batches[f"batch_{batch_index}"][phrase_group["word"]] = phrase_group["clips"]
+    for word in word_dict.keys():
+        print(word)
+        batches[f"batch_{batch_index}"][word] = word_dict[word]
         if(len(batches[f"batch_{batch_index}"]) == 2):
             batch_index += 1
             batches[f"batch_{batch_index}"] = {}
@@ -30,26 +36,6 @@ def create_phrase_batches():
     with open(file_path, "w") as f:
         json.dump(batches, f, indent=4)
     print("batches created successfully")
-
-def group_clips_by_word(data):
-    """
-    Groups clips by word into a list of dicts formatted like:
-    [{"word": "sap", "clips": ["clip1.mp4", "clip2.mp4"]}, ...]
-    """
-    result = {}
-
-    for entry in data:
-        word = entry.get("phrase")
-        clip = entry.get("clipFilename")
-
-        if word and clip:
-            if word not in result:
-                result[word] = []
-            # Avoid duplicates
-            if clip not in result[word]:
-                result[word].append(clip)
-
-    return [{"word": word, "clips": clips} for word, clips in result.items()]
 
 
 create_phrase_batches()

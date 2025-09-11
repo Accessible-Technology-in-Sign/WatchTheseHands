@@ -1,0 +1,80 @@
+services:
+  annotation_db:
+    image: mysql:8.0
+    container_name: annotation_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: labels
+      MYSQL_USER: flaskuser
+      MYSQL_PASSWORD: flaskpass
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      start_period: 30s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  annotation_backend:
+    build:
+      context: ./
+      dockerfile: backend.Dockerfile
+    container_name: annotation_backend
+    environment:
+      MYSQL_HOST: annotation_db
+      MYSQL_USER: flaskuser
+      MYSQL_PASSWORD: flaskpass
+      MYSQL_DATABASE: labels
+    depends_on:
+      annotation_db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost')\" || exit 1"]
+      start_period: 30s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - type: bind
+        source: /data/sign_language_videos/fingerspelling_videos/dmk_v1/video_clips
+        target: /data
+        read_only: true
+
+    networks:
+      - app-network
+  annotation_frontend:
+    container_name: annotation_frontend
+    build:
+      context: ./
+      dockerfile: frontend.Dockerfile
+    depends_on:
+      annotation_backend:
+        condition: service_healthy
+    ports:
+      - "80:4173"
+    networks:
+      - app-network
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_proxy
+    ports:
+      - "443:443"
+      - "80:80"  # Optional: for HTTP redirect to HTTPS
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/nginx/ssl:/etc/nginx/ssl:ro
+    environment:
+      - HOSTNAME=${HOSTNAME:-ebisu.cc.gatech.edu}
+    depends_on:
+      - annotation_frontend
+    restart: unless-stopped
+volumes:
+  mariadb_data:
+
+networks:
+  app-network:
+    driver: bridge
