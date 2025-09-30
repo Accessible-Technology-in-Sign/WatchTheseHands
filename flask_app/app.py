@@ -1,17 +1,19 @@
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from models import db, Annot
+from models import db, Annot, User
 from config import Config, DBLogin
 from datetime import datetime
 from sqlalchemy.dialects.mysql import insert
 from sqlalchemy.exc import IntegrityError
+from videos import videos_bp
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+CORS(app, resources={r"/*": {"origins": ["http://localhost:5173", "http://127.0.0.1:5173"]}},)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{DBLogin.USER}:{DBLogin.PSWD}@localhost/labels'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = Config.SQLALCHEMY_TRACK_MODIFICATIONS
+app.register_blueprint(videos_bp, url_prefix="/api/video")
 
 db.init_app(app)
 
@@ -25,9 +27,9 @@ def home():
 
 @app.route('/add_annot', methods=['POST'])
 def add_annot():
+    data = request.get_json(force=True)
     if not User.query.filter_by(username=data["user"]).first():
         return jsonify({"error": "User not found"}), 403
-    data = request.json
     cmd = insert(Annot).values(
         sign=data['sign'],
         user=data["user"],

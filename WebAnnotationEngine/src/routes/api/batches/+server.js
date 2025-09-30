@@ -7,7 +7,7 @@ Put sign_list.txt in src/routes/config and list words to annotate or leave enpty
 
 example videoConfig.json:
 {
-    "sign_list": "src/config/sign_list.txt", --> doesn't do anything rn
+    "sign_list": "src/routes/config/sign_list.txt",
     "review_source": "static/ReviewVideos",
     "reference_source": "static/ReferenceVideos",
     "language": "en",
