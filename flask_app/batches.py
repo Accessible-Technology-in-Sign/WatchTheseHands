@@ -1,30 +1,8 @@
-"""
-Batches API - Converted from Svelte to Flask
-
-Original location: WebAnnotationEngine/src/routes/api/batches/+server.js
-
-Configuration:
-- Put videoConfig.json in src/routes/config 
-- Put review videos like this: ReviewVideos/BatchName/WordName/all the videos
-- Put all reference videos in 1 folder
-- Put sign_list.txt in src/routes/config and list words to annotate or leave empty if want all
-
-Example videoConfig.json:
-{
-    "sign_list": "src/routes/config/sign_list.txt",
-    "review_source": "static/ReviewVideos",
-    "reference_source": "static/ReferenceVideos",
-    "language": "en",
-    "batches": ["Batch 2"] or [] for all batches
-}
-"""
-
 import os
 import json
 from flask import Blueprint, jsonify, current_app
 
 batches_bp = Blueprint("batches", __name__)
-
 
 def _load_config():
     """Load the video configuration file."""
@@ -43,7 +21,6 @@ def _load_config():
         sign_list_data = ""
     
     return config, sign_list_data, web_root
-
 
 @batches_bp.get("/")
 def get_batches():
