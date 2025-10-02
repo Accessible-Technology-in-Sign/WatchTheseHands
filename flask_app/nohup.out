@@ -1,0 +1,26 @@
+2025-09-18T21:39:17.151640Z 0 [System] [MY-015015] [Server] MySQL Server - start.
+2025-09-18T21:39:17.303113Z 0 [System] [MY-010116] [Server] /opt/homebrew/opt/mysql/bin/mysqld (mysqld 9.4.0) starting as process 28358
+2025-09-18T21:39:17.303125Z 0 [System] [MY-015590] [Server] MySQL Server has access to 8 logical CPUs.
+2025-09-18T21:39:17.303136Z 0 [System] [MY-015590] [Server] MySQL Server has access to 17179869184 bytes of physical memory.
+2025-09-18T21:39:17.305360Z 0 [Warning] [MY-010159] [Server] Setting lower_case_table_names=2 because file system for /opt/homebrew/var/mysql/ is case insensitive
+2025-09-18T21:39:17.311337Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2025-09-18T21:39:17.374405Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2025-09-18T21:39:17.440299Z 0 [ERROR] [MY-011292] [Server] Plugin mysqlx reported: 'Preparation of I/O interfaces failed, X Protocol won't be accessible'
+2025-09-18T21:39:17.440330Z 0 [ERROR] [MY-011300] [Server] Plugin mysqlx reported: 'Setup of socket: '/tmp/mysqlx.sock' failed, can't open lock file /tmp/mysqlx.sock.lock'
+2025-09-18T21:39:17.518624Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2025-09-18T21:39:17.518654Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2025-09-18T21:39:17.519405Z 0 [ERROR] [MY-010274] [Server] Could not open unix socket lock file /tmp/mysql.sock.lock.
+2025-09-18T21:39:17.519415Z 0 [ERROR] [MY-010268] [Server] Unable to setup unix socket lock file.
+2025-09-18T21:39:17.519423Z 0 [ERROR] [MY-010119] [Server] Aborting
+2025-09-18T21:39:18.552886Z 0 [System] [MY-010910] [Server] /opt/homebrew/opt/mysql/bin/mysqld: Shutdown complete (mysqld 9.4.0)  Homebrew.
+2025-09-18T21:39:18.552919Z 0 [System] [MY-015016] [Server] MySQL Server - end.
+2025-09-18T21:47:31.521622Z 0 [System] [MY-015015] [Server] MySQL Server - start.
+2025-09-18T21:47:31.699896Z 0 [System] [MY-010116] [Server] /opt/homebrew/opt/mysql/bin/mysqld (mysqld 9.4.0) starting as process 30761
+2025-09-18T21:47:31.699913Z 0 [System] [MY-015590] [Server] MySQL Server has access to 8 logical CPUs.
+2025-09-18T21:47:31.699924Z 0 [System] [MY-015590] [Server] MySQL Server has access to 17179869184 bytes of physical memory.
+2025-09-18T21:47:31.706677Z 0 [Warning] [MY-010159] [Server] Setting lower_case_table_names=2 because file system for /opt/homebrew/var/mysql/ is case insensitive
+2025-09-18T21:47:31.722855Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2025-09-18T21:47:31.848142Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2025-09-18T21:47:32.058012Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2025-09-18T21:47:32.058059Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2025-09-18T21:47:32.070675Z 0 [System] [MY-010931] [Server] /opt/homebrew/opt/mysql/bin/mysqld: ready for connections. Version: '9.4.0'  socket: '/opt/homebrew/var/mysql/mysql.sock'  port: 0  Homebrew.
