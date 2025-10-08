@@ -1,17 +1,6 @@
-#!/usr/bin/env python3
-"""
-Database connection module for the Plotly dashboard.
-Handles MySQL connections and data retrieval for visualization.
-"""
-
-import os
-import sys
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
-
-# Add the flask_app directory to the path to import config
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'flask_app'))
 
 from config import DBLogin
 
@@ -24,17 +13,13 @@ class DashboardDB:
     def connect(self):
         """Establish connection to MySQL database"""
         try:
-            # Create connection string
             connection_string = f'mysql+pymysql://{DBLogin.USER}:{DBLogin.PSWD}@localhost/labels'
             
-            # Create engine
             self.engine = create_engine(connection_string, echo=False)
             
-            # Create session
             Session = sessionmaker(bind=self.engine)
             self.session = Session()
             
-            # Test connection
             with self.engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
             
@@ -190,5 +175,4 @@ class DashboardDB:
         if self.engine:
             self.engine.dispose()
 
-# Global database instance
 db = DashboardDB()

@@ -1,20 +1,12 @@
-#!/usr/bin/env python3
-"""
-Plotly Dash Dashboard for Annotation Data Visualization
-Provides pie charts for label distribution by sign and by annotator.
-"""
-
 import dash
 from dash import dcc, html, Input, Output, callback
 import plotly.express as px
 import plotly.graph_objects as go
 from db_connection import db
 
-# Initialize Dash app
 app = dash.Dash(__name__)
 app.title = "Annotation Dashboard"
 
-# Define the layout
 app.layout = html.Div([
     html.Div([
         html.H1("Annotation Dashboard", 
@@ -44,13 +36,11 @@ app.layout = html.Div([
             ], style={'width': '48%', 'display': 'inline-block'})
         ], style={'marginBottom': '30px'}),
         
-        # Statistics cards
         html.Div([
             html.Div(id='sign-stats', style={'width': '48%', 'display': 'inline-block', 'marginRight': '4%'}),
             html.Div(id='user-stats', style={'width': '48%', 'display': 'inline-block'})
         ], style={'marginBottom': '30px'}),
         
-        # Charts
         html.Div([
             html.Div([
                 html.H3("Label Distribution by Sign", 
@@ -79,15 +69,12 @@ app.layout = html.Div([
 def update_charts(selected_sign, selected_user):
     """Update charts based on dropdown selections"""
     
-    # Get data for sign pie chart
     sign_labels = db.get_labels_by_sign(selected_sign)
     sign_stats = db.get_sign_stats(selected_sign)
     
-    # Get data for user pie chart
     user_labels = db.get_labels_by_user(selected_user)
     user_stats = db.get_user_stats(selected_user)
     
-    # Create sign pie chart
     if sign_labels:
         sign_fig = px.pie(
             values=list(sign_labels.values()),
@@ -118,7 +105,6 @@ def update_charts(selected_sign, selected_user):
             yaxis=dict(showgrid=False, showticklabels=False)
         )
     
-    # Create user pie chart
     if user_labels:
         user_fig = px.pie(
             values=list(user_labels.values()),
@@ -149,7 +135,6 @@ def update_charts(selected_sign, selected_user):
             yaxis=dict(showgrid=False, showticklabels=False)
         )
     
-    # Create statistics cards
     sign_stats_card = html.Div([
         html.H4(f"{selected_sign} Statistics", style={'color': '#2c3e50', 'marginBottom': '10px'}),
         html.P(f"Total Annotations: {sign_stats.get('total_annotations', 0)}"),
