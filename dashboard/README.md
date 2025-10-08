@@ -9,7 +9,7 @@ A Plotly Dash dashboard for visualizing annotation data from the MySQL database.
 pip install -r requirements.txt
 ```
 
-2. Make sure your MySQL database is running and accessible with the credentials in `flask_app/config.py`
+2. Make sure your MySQL database is running and accessible with the credentials in `config.py`
 
 ## Usage
 
