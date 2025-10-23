@@ -7,6 +7,34 @@ from db_connection import db
 app = dash.Dash(__name__)
 app.title = "Annotation Dashboard"
 
+LABEL_CANONICAL = {
+    'good': 'Good',
+    'correct': 'Good',
+    'bad': 'Bad',
+    'incorrect': 'Bad',
+    'variant': 'Variant',
+    'further review': 'Further Review',
+    'further_review': 'Further Review',
+}
+
+LABEL_COLORS = {
+    'Good': '#2ecc71',          # green
+    'Bad': '#e74c3c',           # red
+    'Variant': '#f1c40f',       # yellow
+    'Further Review': '#3498db' # blue
+}
+
+def normalize_label_counts(label_counts):
+    """Normalize label keys to canonical labels and aggregate counts."""
+    if not label_counts:
+        return {}
+    normalized = {}
+    for label, count in label_counts.items():
+        key = (label or '').strip()
+        canon = LABEL_CANONICAL.get(key.lower(), key)
+        normalized[canon] = normalized.get(canon, 0) + (count or 0)
+    return normalized
+
 app.layout = html.Div([
     html.Div([
         html.H1("Annotation Dashboard", 
@@ -69,18 +97,21 @@ app.layout = html.Div([
 def update_charts(selected_sign, selected_user):
     """Update charts based on dropdown selections"""
     
-    sign_labels = db.get_labels_by_sign(selected_sign)
+    sign_labels = normalize_label_counts(db.get_labels_by_sign(selected_sign))
     sign_stats = db.get_sign_stats(selected_sign)
     
-    user_labels = db.get_labels_by_user(selected_user)
+    user_labels = normalize_label_counts(db.get_labels_by_user(selected_user))
     user_stats = db.get_user_stats(selected_user)
     
     if sign_labels:
+        sign_names = list(sign_labels.keys())
+        sign_values = list(sign_labels.values())
         sign_fig = px.pie(
-            values=list(sign_labels.values()),
-            names=list(sign_labels.keys()),
+            values=sign_values,
+            names=sign_names,
             title=f"Labels for {selected_sign}",
-            color_discrete_sequence=px.colors.qualitative.Set3
+            color=sign_names,
+            color_discrete_map=LABEL_COLORS
         )
         sign_fig.update_traces(
             textposition='inside',
@@ -106,11 +137,14 @@ def update_charts(selected_sign, selected_user):
         )
     
     if user_labels:
+        user_names = list(user_labels.keys())
+        user_values = list(user_labels.values())
         user_fig = px.pie(
-            values=list(user_labels.values()),
-            names=list(user_labels.keys()),
+            values=user_values,
+            names=user_names,
             title=f"Labels by {selected_user}",
-            color_discrete_sequence=px.colors.qualitative.Pastel
+            color=user_names,
+            color_discrete_map=LABEL_COLORS
         )
         user_fig.update_traces(
             textposition='inside',
