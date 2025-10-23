@@ -25,7 +25,7 @@
     loading = false;
 
     try {
-      const response = await fetch('/api/batches');
+      const response = await fetch('http://localhost:5000/api/batches');
       if (!response.ok) throw new Error('Failed to load batches');
       batches = await response.json();
       batchList = Object.keys(batches); 

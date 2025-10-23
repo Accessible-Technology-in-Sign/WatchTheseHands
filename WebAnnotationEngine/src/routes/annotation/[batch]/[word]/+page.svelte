@@ -8,6 +8,12 @@
 
   const { batch, word, selectedVideoData } = data;
 
+  const API_BASE = "http://127.0.0.1:5000";
+  const toFlask = (p) => {
+    const clean = p.replace(/^\/?/, "");
+    return `${API_BASE}/${encodeURI(clean)}`;
+  };
+
   let username = localStorage.getItem("username");
 
 
@@ -244,7 +250,7 @@
           <Pane minSize={20} maxSize={63}>
             <!-- Video to review -->
             <video id="review-video" class="w-full h-full" 
-                src={`${selectedVideoData.reviews[currReviewVideo]}`}
+                src={toFlask(selectedVideoData.reviews[currReviewVideo])}
                 loop={reviewVideoLooped}   
                 autoplay
                 bind:paused={reviewVideoPaused}
@@ -256,7 +262,7 @@
                 <Pane minSize={15} maxSize={80}>
                   <!-- Reference video -->
                   <video class="w-full h-full"
-                      src={`${selectedVideoData.reference}`}
+                      src={toFlask(selectedVideoData.reference)}
                       loop={referenceVideoLooped}
                       autoplay
                       bind:paused={referenceVideoPaused}

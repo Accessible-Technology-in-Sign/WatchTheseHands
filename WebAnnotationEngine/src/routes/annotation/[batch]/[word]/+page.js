@@ -1,7 +1,7 @@
 export async function load({ params, fetch }) {
   const { batch, word } = params;
 
-  const response = await fetch('/api/batches');
+  const response = await fetch('http://localhost:5000/api/batches');
 
   if (!response.ok) {
     console.error('Failed to fetch batches');
