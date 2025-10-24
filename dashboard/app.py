@@ -115,7 +115,7 @@ def update_charts(selected_sign, selected_user):
         )
         sign_fig.update_traces(
             textposition='inside',
-            textinfo='percent+label',
+            textinfo='label+value+percent',
             hovertemplate='<b>%{label}</b><br>Count: %{value}<br>Percentage: %{percent}<extra></extra>'
         )
         sign_fig.update_layout(
@@ -148,7 +148,7 @@ def update_charts(selected_sign, selected_user):
         )
         user_fig.update_traces(
             textposition='inside',
-            textinfo='percent+label',
+            textinfo='label+percent+value',
             hovertemplate='<b>%{label}</b><br>Count: %{value}<br>Percentage: %{percent}<extra></extra>'
         )
         user_fig.update_layout(
